@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interactive Constellation Map: Explore Myths Tied to the Stars</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        /* Minimal style adjustments if needed - prefer Tailwind classes */
+        body {
+            background-image: radial-gradient(circle, rgba(31, 41, 55, 0.1) 1px, transparent 1px);
+            background-size: 10px 10px; /* Subtle dot grid */
+        }
+        /* Custom scrollbar for constellation list (optional enhancement) */
+        #constellation-list::-webkit-scrollbar {
+            width: 8px;
+        }
+        #constellation-list::-webkit-scrollbar-track {
+            background: #374151; /* gray-700 */
+            border-radius: 10px;
+        }
+        #constellation-list::-webkit-scrollbar-thumb {
+            background-color: #0e7490; /* cyan-700 */
+            border-radius: 10px;
+            border: 2px solid #374151; /* gray-700 */
+        }
+        #constellation-list::-webkit-scrollbar-thumb:hover {
+            background-color: #06b6d4; /* cyan-600 */
+        }
+    </style>
+</head>
+<body class="bg-gray-900 text-gray-100 font-sans antialiased min-h-screen flex flex-col">
+
+    <header class="bg-gray-800/80 backdrop-blur-sm shadow-lg py-4 sticky top-0 z-10 border-b border-gray-700">
+        <div class="container mx-auto px-4">
+            <h1 class="text-2xl sm:text-3xl font-bold text-center text-cyan-400 tracking-tight">
+                Celestial Myths Explorer
+            </h1>
+            <p class="text-center text-sm text-cyan-200/80 mt-1">Discover the stories woven into the night sky</p>
+        </div>
+    </header>
+
+    <main class="container mx-auto px-4 py-8 flex-grow">
+        <div class="flex flex-col lg:flex-row gap-6 lg:gap-8">
+
+            <!-- Constellation List/Selector -->
+            <aside class="lg:w-1/3 xl:w-1/4 bg-gray-800/90 p-5 rounded-xl shadow-lg border border-gray-700/50">
+                <h2 class="text-xl font-semibold mb-4 text-cyan-300 border-b border-gray-600 pb-2">Constellations</h2>
+                <nav id="constellation-list" class="overflow-y-auto max-h-[65vh] lg:max-h-[75vh] pr-2 -mr-2">
+                    <ul class="space-y-1.5">
+                        <li><button onclick="showConstellation('orion')" class="w-full text-left p-2.5 rounded-md text-gray-200 hover:bg-cyan-800/50 hover:text-white focus:outline-none focus:ring-2 focus:ring-cyan-500 focus:bg-cyan-700/60 transition duration-200 ease-in-out text-sm sm:text-base">Orion (The Hunter)</button></li>
+                        <li><button onclick="showConstellation('ursa-major')" class="w-full text-left p-2.5 rounded-md text-gray-200 hover:bg-cyan-800/50 hover:text-white focus:outline-none focus:ring-2 focus:ring-cyan-500 focus:bg-cyan-700/60 transition duration-200 ease-in-out text-sm sm:text-base">Ursa Major (The Great Bear)</button></li>
+                        <li><button onclick="showConstellation('cassiopeia')" class="w-full text-left p-2.5 rounded-md text-gray-200 hover:bg-cyan-800/50 hover:text-white focus:outline-none focus:ring-2 focus:ring-cyan-500 focus:bg-cyan-700/60 transition duration-200 ease-in-out text-sm sm:text-base">Cassiopeia (The Queen)</button></li>
+                        <li><button onclick="showConstellation('leo')" class="w-full text-left p-2.5 rounded-md text-gray-200 hover:bg-cyan-800/50 hover:text-white focus:outline-none focus:ring-2 focus:ring-cyan-500 focus:bg-cyan-700/60 transition duration-200 ease-in-out text-sm sm:text-base">Leo (The Lion)</button></li>
+                        <li><button onclick="showConstellation('cygnus')" class="w-full text-left p-2.5 rounded-md text-gray-200 hover:bg-cyan-800/50 hover:text-white focus:outline-none focus:ring-2 focus:ring-cyan-500 focus:bg-cyan-700/60 transition duration-200 ease-in-out text-sm sm:text-base">Cygnus (The Swan)</button></li>
+                        <li><button onclick="showConstellation('taurus')" class="w-full text-left p-2.5 rounded-md text-gray-200 hover:bg-cyan-800/50 hover:text-white focus:outline-none focus:ring-2 focus:ring-cyan-500 focus:bg-cyan-700/60 transition duration-200 ease-in-out text-sm sm:text-base">Taurus (The Bull)</button></li>
+                        <li><button onclick="showConstellation('canis-major')" class="w-full text-left p-2.5 rounded-md text-gray-200 hover:bg-cyan-800/50 hover:text-white focus:outline-none focus:ring-2 focus:ring-cyan-500 focus:bg-cyan-700/60 transition duration-200 ease-in-out text-sm sm:text-base">Canis Major (The Great Dog)</button></li>
+                         <li><button onclick="showConstellation('scorpius')" class="w-full text-left p-2.5 rounded-md text-gray-200 hover:bg-cyan-800/50 hover:text-white focus:outline-none focus:ring-2 focus:ring-cyan-500 focus:bg-cyan-700/60 transition duration-200 ease-in-out text-sm sm:text-base">Scorpius (The Scorpion)</button></li>
+                         <li><button onclick="showConstellation('pegasus')" class="w-full text-left p-2.5 rounded-md text-gray-200 hover:bg-cyan-800/50 hover:text-white focus:outline-none focus:ring-2 focus:ring-cyan-500 focus:bg-cyan-700/60 transition duration-200 ease-in-out text-sm sm:text-base">Pegasus (The Winged Horse)</button></li>
+                         <li><button onclick="showConstellation('andromeda')" class="w-full text-left p-2.5 rounded-md text-gray-200 hover:bg-cyan-800/50 hover:text-white focus:outline-none focus:ring-2 focus:ring-cyan-500 focus:bg-cyan-700/60 transition duration-200 ease-in-out text-sm sm:text-base">Andromeda (The Princess)</button></li>
+                    </ul>
+                </nav>
+            </aside>
+
+            <!-- Constellation Details Display -->
+            <section id="constellation-details" class="lg:w-2/3 xl:w-3/4 bg-gray-800/90 p-6 sm:p-8 rounded-xl shadow-lg border border-gray-700/50 min-h-[50vh] flex items-center justify-center">
+                <!-- Placeholder shown initially -->
+                <div id="details-placeholder" class="text-center text-gray-400/80 animate-pulse">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-16 w-16 mx-auto mb-4 text-cyan-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.539 1.118l-3.975-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.196-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z" />
+                    </svg>
+                    <p class="text-lg">Select a constellation from the list to explore its myth and stars.</p>
+                </div>
+
+                <!-- Content area, hidden initially -->
+                <article id="details-content" class="hidden w-full space-y-5">
+                    <h2 id="constellation-name" class="text-3xl sm:text-4xl font-bold text-cyan-400 mb-3 border-b border-gray-600 pb-3"></h2>
+                    <div class="flex flex-col md:flex-row gap-6">
+                        <div class="md:w-1/2 lg:w-5/12 flex-shrink-0">
+                             <img id="constellation-image" src="https://via.placeholder.com/600x400/111827/67e8f9?text=Select+Constellation" alt="Constellation Image" class="w-full h-auto max-h-80 object-contain rounded-lg shadow-md border border-gray-700 bg-gray-900/50">
+                        </div>
+                        <div class="md:w-1/2 lg:w-7/12 space-y-4">
+                            <div>
+                                <h3 class="text-xl font-semibold text-cyan-300 mb-2">The Myth</h3>
+                                <p id="constellation-myth" class="text-gray-300 leading-relaxed text-sm sm:text-base"></p>
+                            </div>
+                             <div>
+                                <h3 class="text-xl font-semibold text-cyan-300 mb-2">Notable Stars</h3>
+                                <p id="constellation-stars" class="text-gray-300 text-sm sm:text-base"></p>
+                            </div>
+                             <div>
+                                <h3 class="text-xl font-semibold text-cyan-300 mb-2">Visibility</h3>
+                                <p id="constellation-visibility" class="text-gray-300 text-sm sm:text-base"></p>
+                            </div>
+                        </div>
+                    </div>
+                </article>
+            </section>
+
+        </div>
+    </main>
+
+    <footer class="bg-gray-800/80 shadow-inner mt-12 py-4 border-t border-gray-700">
+        <div class="container mx-auto px-4 text-center text-gray-500 text-xs sm:text-sm">
+            &copy; <span id="current-year"></span> Celestial Myths Explorer. Created with HTML & Tailwind CSS.
+        </div>
+    </footer>
+
+    <script>
+        // Simple data store for constellations (Placeholder Content)
+        const constellationData = {
+            'orion': {
+                name: 'Orion (The Hunter)',
+                image: 'https://via.placeholder.com/600x400/111827/93c5fd?text=Orion',
+                myth: 'In Greek mythology, Orion was a giant huntsman whom Zeus placed among the stars. He is often depicted facing Taurus, the bull. One myth tells of his pursuit of the Pleiades sisters, while another recounts his demise at the hands of a giant scorpion sent by Gaia or Artemis.',
+                stars: 'Betelgeuse (a red supergiant), Rigel (a blue supergiant), Bellatrix, Mintaka, Alnilam, Alnitak (forming Orion\'s Belt). Features the Orion Nebula.',
+                visibility: 'Prominent in the winter sky in the Northern Hemisphere (summer in the Southern Hemisphere).'
+            },
+            'ursa-major': {
+                name: 'Ursa Major (The Great Bear)',
+                image: 'https://via.placeholder.com/600x400/111827/a5b4fc?text=Ursa+Major',
+                myth: 'Most famously associated with the Greek myth of Callisto, a nymph turned into a bear by Hera out of jealousy, and later placed in the sky by Zeus. Contains the well-known Big Dipper asterism, used for navigation.',
+                stars: 'Dubhe, Merak (the Pointers), Phecda, Megrez, Alioth, Mizar (with Alcor), Alkaid. These form the Big Dipper.',
+                visibility: 'Circumpolar for many northern latitudes (visible year-round). Best seen in spring in the Northern Hemisphere.'
+            },
+            'cassiopeia': {
+                name: 'Cassiopeia (The Queen)',
+                image: 'https://via.placeholder.com/600x400/111827/f9a8d4?text=Cassiopeia',
+                myth: 'In Greek myth, Cassiopeia was a vain queen who boasted she was more beautiful than the Nereids (sea nymphs). As punishment, Poseidon forced her to be placed in the sky, tied to her throne, sometimes upside down.',
+                stars: 'Schedar, Caph, Gamma Cassiopeiae (Tsih), Ruchbah, Segin. Forms a distinctive "W" or "M" shape.',
+                visibility: 'Circumpolar for many northern latitudes. Best seen in autumn in the Northern Hemisphere.'
+            },
+            'leo': {
+                name: 'Leo (The Lion)',
+                image: 'https://via.placeholder.com/600x400/111827/fcd34d?text=Leo',
+                myth: 'Represents the Nemean Lion, a fearsome beast killed by Heracles (Hercules) as the first of his twelve labors. Its hide was impenetrable, so Heracles had to strangle it.',
+                stars: 'Regulus (the "heart" of the lion), Denebola (the "tail"), Algieba. Features a "sickle" shape representing the lion\'s head and mane.',
+                visibility: 'Prominent in the spring sky in the Northern Hemisphere (autumn in the Southern Hemisphere).'
+            },
+            'cygnus': {
+                name: 'Cygnus (The Swan)',
+                image: 'https://via.placeholder.com/600x400/111827/ffffff?text=Cygnus',
+                myth: 'Often identified with Zeus disguised as a swan to seduce Leda. Another myth links it to Orpheus, transformed into a swan after his death and placed near his lyre (Lyra). Contains the Northern Cross asterism.',
+                stars: 'Deneb (one of the brightest stars in the sky, part of the Summer Triangle), Albireo (a beautiful double star), Sadr, Gienah.',
+                visibility: 'Prominent in the summer and autumn sky in the Northern Hemisphere (winter/spring in the Southern Hemisphere).'
+            },
+             'taurus': {
+                name: 'Taurus (The Bull)',
+                image: 'https://via.placeholder.com/600x400/111827/fca5a5?text=Taurus',
+                myth: 'Often identified with Zeus who transformed into a white bull to abduct the Phoenician princess Europa. Also associated with the bull faced by Orion.',
+                stars: 'Aldebaran (a bright, reddish star, the "eye" of the bull), Elnath. Features two famous open star clusters: the Pleiades (Seven Sisters) and the Hyades.',
+                visibility: 'Prominent in the winter sky in the Northern Hemisphere (summer in the Southern Hemisphere).'
+            },
+            'canis-major': {
+                name: 'Canis Major (The Great Dog)',
+                image: 'https://via.placeholder.com/600x400/111827/bfdbfe?text=Canis+Major',
+                myth: 'Represents the larger of Orion\'s two hunting dogs, following his master across the sky. Sometimes identified with Laelaps, the fastest dog in the world.',
+                stars: 'Sirius (the brightest star in the night sky, the "Dog Star"), Adhara, Wezen, Murzim.',
+                visibility: 'Prominent in the winter sky in the Northern Hemisphere (summer in the Southern Hemisphere), following Orion.'
+            },
+            'scorpius': {
+                name: 'Scorpius (The Scorpion)',
+                image: 'https://via.placeholder.com/600x400/111827/f87171?text=Scorpius',
+                myth: 'Identified as the scorpion that stung and killed Orion the Hunter in Greek mythology. To prevent them from fighting in the sky, Zeus placed them on opposite sides of the celestial sphere.',
+                stars: 'Antares (a massive red supergiant, the "heart" of the scorpion), Shaula, Sargas, Dschubba. Has a distinctive J-shape.',
+                visibility: 'Prominent in the summer sky in the Northern Hemisphere (winter in the Southern Hemisphere). Located near the center of the Milky Way.'
+            },
+            'pegasus': {
+                name: 'Pegasus (The Winged Horse)',
+                image: 'https://via.placeholder.com/600x400/111827/c4b5fd?text=Pegasus',
+                myth: 'In Greek mythology, Pegasus sprang from the neck of Medusa when she was slain by Perseus. He was later ridden by Bellerophon to fight the Chimera. Features the Great Square of Pegasus asterism.',
+                stars: 'Markab, Scheat, Algenib (forming the Great Square with Alpheratz from Andromeda), Enif.',
+                visibility: 'Prominent in the autumn sky in the Northern Hemisphere (spring in the Southern Hemisphere).'
+            },
+            'andromeda': {
+                name: 'Andromeda (The Princess)',
+                image: 'https://via.placeholder.com/600x400/111827/d8b4fe?text=Andromeda',
+                myth: 'Named after the princess in Greek mythology who was chained to a rock as a sacrifice to the sea monster Cetus, as punishment for her mother Cassiopeia\'s vanity. She was rescued by Perseus.',
+                stars: 'Alpheratz (shared with Pegasus), Mirach, Almach (a colorful double star). Home to the Andromeda Galaxy (M31), the closest large spiral galaxy to the Milky Way.',
+                visibility: 'Prominent in the autumn sky in the Northern Hemisphere (spring in the Southern Hemisphere), located near Pegasus and Cassiopeia.'
+            }
+        };
+
+        const detailsPlaceholder = document.getElementById('details-placeholder');
+        const detailsContent = document.getElementById('details-content');
+        const constellationNameEl = document.getElementById('constellation-name');
+        const constellationImageEl = document.getElementById('constellation-image');
+        const constellationMythEl = document.getElementById('constellation-myth');
+        const constellationStarsEl = document.getElementById('constellation-stars');
+        const constellationVisibilityEl = document.getElementById('constellation-visibility');
+        const constellationButtons = document.querySelectorAll('#constellation-list button');
+
+        // Function to show constellation details
+        function showConstellation(id) {
+            const data = constellationData[id];
+            if (!data) return; // Exit if data not found
+
+            // Update content
+            constellationNameEl.textContent = data.name;
+            constellationImageEl.src = data.image;
+            constellationImageEl.alt = `Image of ${data.name}`;
+            constellationMythEl.textContent = data.myth;
+            constellationStarsEl.textContent = data.stars;
+            constellationVisibilityEl.textContent = data.visibility;
+
+            // Hide placeholder and show content
+            detailsPlaceholder.classList.add('hidden');
+            detailsContent.classList.remove('hidden');
+
+             // Update active button style
+            constellationButtons.forEach(button => {
+                if (button.getAttribute('onclick') === `showConstellation('${id}')`) {
+                    button.classList.add('bg-cyan-700/60', 'text-white');
+                    button.classList.remove('hover:bg-cyan-800/50', 'text-gray-200');
+                } else {
+                    button.classList.remove('bg-cyan-700/60');
+                    button.classList.add('hover:bg-cyan-800/50', 'text-gray-200');
+                }
+            });
+        }
+
+        // Set current year in footer
+        document.getElementById('current-year').textContent = new Date().getFullYear();
+
+        // Optional: Show a default constellation on load?
+        // showConstellation('orion'); // Uncomment to show Orion by default
+
+    </script>
+
+</body>
+</html>
