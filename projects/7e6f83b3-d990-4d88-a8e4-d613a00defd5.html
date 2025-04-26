@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interactive UI Element Anatomy Explorer</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        /* Minimal style for highlighting active parts - Tailwind's ring utility is preferred */
+        .highlighted-part {
+            outline: 2px solid #3b82f6; /* blue-500 */
+            outline-offset: 2px;
+            box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.3); /* Optional softer glow */
+            border-radius: 4px; /* Match element rounding */
+            transition: outline 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+        }
+        /* Ensure clickable areas have pointer cursor */
+        [data-part-name] {
+            cursor: help;
+        }
+    </style>
+</head>
+<body class="bg-gray-100 font-sans antialiased text-gray-800">
+
+    <!-- Header -->
+    <header class="bg-gradient-to-r from-blue-600 to-indigo-700 text-white shadow-md sticky top-0 z-10">
+        <div class="container mx-auto px-4 py-4 md:py-5 flex justify-between items-center">
+            <h1 class="text-xl sm:text-2xl md:text-3xl font-bold tracking-tight">UI Element Anatomy Explorer</h1>
+            <span class="text-sm hidden sm:inline">Explore the building blocks of interfaces</span>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="container mx-auto px-4 py-8">
+
+        <div class="flex flex-col lg:flex-row gap-8">
+
+            <!-- Left Panel: Element Selection & Display -->
+            <div class="lg:w-2/3">
+                <!-- Element Selector Tabs -->
+                <div class="mb-6 border-b border-gray-300">
+                    <nav class="-mb-px flex space-x-6" aria-label="Tabs">
+                        <button id="tab-button" onclick="showElement('element-button', this)" class="tab-button whitespace-nowrap py-3 px-1 border-b-2 font-medium text-sm border-indigo-500 text-indigo-600" aria-current="page">
+                            Button
+                        </button>
+                        <button id="tab-card" onclick="showElement('element-card', this)" class="tab-button whitespace-nowrap py-3 px-1 border-b-2 font-medium text-sm border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300">
+                            Card
+                        </button>
+                        <button id="tab-input" onclick="showElement('element-input', this)" class="tab-button whitespace-nowrap py-3 px-1 border-b-2 font-medium text-sm border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300">
+                            Input Field
+                        </button>
+                         <button id="tab-modal" onclick="showElement('element-modal', this)" class="tab-button whitespace-nowrap py-3 px-1 border-b-2 font-medium text-sm border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300">
+                            Modal
+                        </button>
+                    </nav>
+                </div>
+
+                <!-- Element Display Area -->
+                <div id="element-display-area" class="bg-white p-6 sm:p-8 rounded-lg shadow-lg min-h-[300px] flex items-center justify-center border border-gray-200 relative">
+                    <div class="absolute top-2 right-2 text-xs text-gray-400 italic hidden sm:block">Click parts to learn more</div>
+
+                    <!-- Button Example -->
+                    <div id="element-button" class="element-container w-full flex justify-center items-center">
+                        <button class="inline-flex items-center justify-center px-6 py-3 border border-transparent text-base font-medium rounded-md shadow-sm text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-colors duration-150 ease-in-out">
+                            <span data-part-name="Button Container" data-part-desc="The main bounding box of the button, defining its shape, background, and padding." class="absolute inset-0 opacity-0" onclick="showPartInfo('element-button', this)"></span>
+                            <!-- Heroicon: mail -->
+                            <svg data-part-name="Icon (Optional)" data-part-desc="A small graphic element providing visual context or reinforcing the button's action. Often used for clarity or branding." class="h-5 w-5 mr-2 -ml-1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true" onclick="showPartInfo('element-button', this)">
+                                <path d="M2.003 5.884L10 9.882l7.997-3.998A2 2 0 0016 4H4a2 2 0 00-1.997 1.884z" />
+                                <path d="M18 8.118l-8 4-8-4V14a2 2 0 002 2h12a2 2 0 002-2V8.118z" />
+                            </svg>
+                            <span data-part-name="Label Text" data-part-desc="The primary text describing the button's action (e.g., 'Submit', 'Learn More', 'Add to Cart'). Should be clear and concise." onclick="showPartInfo('element-button', this)">
+                                Action Button
+                            </span>
+                        </button>
+                    </div>
+
+                    <!-- Card Example -->
+                    <div id="element-card" class="element-container w-full max-w-sm hidden">
+                         <div data-part-name="Card Container" data-part-desc="The main wrapper for the card content. Provides background, border, shadow, and padding to group related information." class="bg-white rounded-lg shadow-md overflow-hidden border border-gray-200 relative" onclick="showPartInfo('element-card', this)">
+                            <img data-part-name="Image/Media Area (Optional)" data-part-desc="A visual element, often at the top, to grab attention or illustrate the card's content (e.g., product photo, article banner)." class="w-full h-48 object-cover" src="https://via.placeholder.com/400x300/cccccc/969696?text=Card+Image" alt="Placeholder Image" onclick="showPartInfo('element-card', this)">
+                            <div class="p-4 sm:p-5">
+                                <h3 data-part-name="Title/Heading" data-part-desc="A concise title summarizing the card's main topic or item." class="text-lg font-semibold text-gray-900 mb-1" onclick="showPartInfo('element-card', this)">Card Title Here</h3>
+                                <p data-part-name="Description/Body Text" data-part-desc="Supporting text providing more details, context, or a summary related to the title." class="text-gray-600 text-sm mb-4" onclick="showPartInfo('element-card', this)">This is a brief description providing more context about the content of this card element.</p>
+                                <div data-part-name="Action Area (Optional)" data-part-desc="Contains buttons or links allowing users to interact further (e.g., 'Read More', 'View Details', 'Add to Cart')." class="flex justify-end" onclick="showPartInfo('element-card', this)">
+                                    <button class="px-4 py-2 bg-indigo-600 text-white text-sm font-medium rounded-md hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition-colors">
+                                        Learn More
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Input Field Example -->
+                    <div id="element-input" class="element-container w-full max-w-sm hidden">
+                        <div class="space-y-1">
+                             <label data-part-name="Label" data-part-desc="Text identifying the purpose of the input field. Should be clear and positioned close to the input." for="example-input" class="block text-sm font-medium text-gray-700" onclick="showPartInfo('element-input', this)">Email Address</label>
+                             <div data-part-name="Input Container" data-part-desc="The wrapper for the input element itself, defining its visual appearance (border, background, padding, focus state)." class="mt-1 relative rounded-md shadow-sm" onclick="showPartInfo('element-input', this)">
+                                <input type="email" name="email" id="example-input" class="block w-full px-3 py-2 border border-gray-300 rounded-md placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" placeholder="you@example.com" aria-describedby="email-description">
+                             </div>
+                             <p data-part-name="Helper Text / Description (Optional)" data-part-desc="Provides additional context, instructions, or formatting examples for the input field." class="mt-1 text-xs text-gray-500" id="email-description" onclick="showPartInfo('element-input', this)">We'll never share your email. Max 50 characters.</p>
+                             <p data-part-name="Error Message (Conditional)" data-part-desc="Displayed when validation fails, clearly indicating the error and how to fix it. Often styled distinctively (e.g., red text)." class="mt-1 text-xs text-red-600 hidden" id="email-error" onclick="showPartInfo('element-input', this)">Please enter a valid email address.</p>
+                        </div>
+                    </div>
+
+                    <!-- Modal Example -->
+                    <div id="element-modal" class="element-container w-full flex justify-center items-center hidden">
+                        <!-- Trigger Button (not part of anatomy, just for context) -->
+                        <span class="text-gray-500 italic">(Modal appears overlaid - structure shown below)</span>
+
+                        <!-- Static representation of a modal structure -->
+                        <div class="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity pointer-events-none opacity-50" aria-hidden="true" data-part-name="Overlay/Backdrop" data-part-desc="A semi-transparent layer covering the main page content, focusing user attention on the modal dialog." onclick="showPartInfo('element-modal', this)"></div>
+
+                        <div class="inline-block align-bottom bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full border border-gray-300 relative" data-part-name="Modal Dialog Container" data-part-desc="The main window holding the modal's content. Typically centered, with distinct background, border, and shadow." onclick="showPartInfo('element-modal', this)">
+                            <div class="bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
+                                <div class="sm:flex sm:items-start">
+                                    <div data-part-name="Icon/Visual (Optional)" data-part-desc="An optional icon or graphic, often related to the modal's purpose (e.g., warning, success, information)." class="mx-auto flex-shrink-0 flex items-center justify-center h-12 w-12 rounded-full bg-blue-100 sm:mx-0 sm:h-10 sm:w-10" onclick="showPartInfo('element-modal', this)">
+                                        <!-- Heroicon: information-circle -->
+                                        <svg class="h-6 w-6 text-blue-600" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+                                          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                        </svg>
+                                    </div>
+                                    <div class="mt-3 text-center sm:mt-0 sm:ml-4 sm:text-left w-full">
+                                        <h3 data-part-name="Title/Heading" data-part-desc="Clearly states the purpose or topic of the modal." class="text-lg leading-6 font-medium text-gray-900" id="modal-title" onclick="showPartInfo('element-modal', this)">
+                                            Modal Title
+                                        </h3>
+                                        <div class="mt-2">
+                                            <p data-part-name="Body Content" data-part-desc="The main message, information, form, or content presented within the modal." class="text-sm text-gray-500" onclick="showPartInfo('element-modal', this)">
+                                                This is the main content area of the modal. It can contain text, forms, images, or other components needed for the specific interaction.
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div data-part-name="Footer/Action Area" data-part-desc="Typically contains buttons for confirming, canceling, or closing the modal." class="bg-gray-50 px-4 py-3 sm:px-6 sm:flex sm:flex-row-reverse" onclick="showPartInfo('element-modal', this)">
+                                <button type="button" class="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-blue-600 text-base font-medium text-white hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 sm:ml-3 sm:w-auto sm:text-sm transition-colors">
+                                    Confirm
+                                </button>
+                                <button type="button" class="mt-3 w-full inline-flex justify-center rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-base font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:mt-0 sm:ml-3 sm:w-auto sm:text-sm transition-colors">
+                                    Cancel
+                                </button>
+                                <button data-part-name="Close Button (Optional)" data-part-desc="An 'X' icon, usually in a corner, providing an alternative way to dismiss the modal." type="button" class="absolute top-3 right-3 text-gray-400 hover:text-gray-500 focus:outline-none" onclick="showPartInfo('element-modal', this)">
+                                    <span class="sr-only">Close</span>
+                                    <!-- Heroicon: x -->
+                                    <svg class="h-5 w-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+                                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                                    </svg>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+            <!-- Right Panel: Information -->
+            <div class="lg:w-1/3">
+                <div id="info-panel" class="bg-white p-6 rounded-lg shadow-lg border border-gray-200 sticky top-24">
+                    <h2 class="text-xl font-semibold mb-3 text-gray-800 border-b pb-2">Anatomy Details</h2>
+                    <div id="info-content" class="text-gray-700 space-y-4">
+                        <p class="text-gray-500 italic">Click on a part of the UI element on the left to see its description here.</p>
+                        <div id="part-name-display" class="text-lg font-medium text-indigo-700 hidden"></div>
+                        <div id="part-desc-display" class="text-sm leading-relaxed hidden"></div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-gray-800 text-gray-400 mt-12 py-6">
+        <div class="container mx-auto px-4 text-center text-sm">
+            &copy; 2023 UI Element Anatomy Explorer. Built with HTML & Tailwind CSS.
+        </div>
+    </footer>
+
+    <script>
+        let currentHighlightedElement = null;
+
+        function showElement(elementId, tabButton) {
+            // Hide all element containers
+            const containers = document.querySelectorAll('.element-container');
+            containers.forEach(container => {
+                container.classList.add('hidden');
+            });
+
+            // Show the selected element container
+            const selectedContainer = document.getElementById(elementId);
+            if (selectedContainer) {
+                selectedContainer.classList.remove('hidden');
+            }
+
+            // Update tab styles
+            const tabs = document.querySelectorAll('.tab-button');
+            tabs.forEach(tab => {
+                tab.classList.remove('border-indigo-500', 'text-indigo-600');
+                tab.classList.add('border-transparent', 'text-gray-500', 'hover:text-gray-700', 'hover:border-gray-300');
+                tab.setAttribute('aria-current', 'false');
+            });
+
+            if (tabButton) {
+                tabButton.classList.add('border-indigo-500', 'text-indigo-600');
+                tabButton.classList.remove('border-transparent', 'text-gray-500', 'hover:text-gray-700', 'hover:border-gray-300');
+                tabButton.setAttribute('aria-current', 'page');
+            }
+
+            // Reset info panel when changing elements
+            resetInfoPanel();
+            removeHighlight();
+        }
+
+        function showPartInfo(elementScopeId, clickedPartElement) {
+            const partName = clickedPartElement.getAttribute('data-part-name');
+            const partDesc = clickedPartElement.getAttribute('data-part-desc');
+
+            const infoContent = document.getElementById('info-content');
+            const partNameDisplay = document.getElementById('part-name-display');
+            const partDescDisplay = document.getElementById('part-desc-display');
+            const initialText = infoContent.querySelector('p.italic');
+
+            if (partName && partDesc) {
+                if(initialText) initialText.classList.add('hidden');
+                partNameDisplay.textContent = partName;
+                partDescDisplay.textContent = partDesc;
+                partNameDisplay.classList.remove('hidden');
+                partDescDisplay.classList.remove('hidden');
+
+                // Highlight the clicked part
+                highlightPart(clickedPartElement, elementScopeId);
+
+            } else {
+                resetInfoPanel();
+                removeHighlight();
+            }
+             // Prevent event bubbling if clicking on nested parts
+             event.stopPropagation();
+        }
+
+        function resetInfoPanel() {
+            const infoContent = document.getElementById('info-content');
+            const partNameDisplay = document.getElementById('part-name-display');
+            const partDescDisplay = document.getElementById('part-desc-display');
+            const initialText = infoContent.querySelector('p.italic');
+
+            partNameDisplay.classList.add('hidden');
+            partDescDisplay.classList.add('hidden');
+            if(initialText) initialText.classList.remove('hidden');
+            partNameDisplay.textContent = '';
+            partDescDisplay.textContent = '';
+        }
+
+        function highlightPart(elementToHighlight, scopeId) {
+            removeHighlight(scopeId); // Remove previous highlight within the same scope
+
+            // Apply highlight class - using Tailwind's ring utility via JS is tricky without custom config
+            // Using the simple outline style defined in <head>
+            elementToHighlight.classList.add('highlighted-part');
+            currentHighlightedElement = elementToHighlight; // Store reference to remove later
+        }
+
+        function removeHighlight(scopeId = null) {
+             // If a specific scope is provided, only remove highlights within that element
+            const scopeElement = scopeId ? document.getElementById(scopeId) : document;
+            if (!scopeElement) return;
+
+            const highlightedElements = scopeElement.querySelectorAll('.highlighted-part');
+            highlightedElements.forEach(el => {
+                el.classList.remove('highlighted-part');
+            });
+
+            // Clear the global reference if it matches the one being removed
+            if (currentHighlightedElement && scopeElement.contains(currentHighlightedElement)) {
+                 currentHighlightedElement = null;
+            } else if (!scopeId && currentHighlightedElement) {
+                // If removing globally, ensure the reference is cleared
+                 currentHighlightedElement = null;
+            }
+        }
+
+        // Initialize the view with the first element shown
+        document.addEventListener('DOMContentLoaded', () => {
+            const firstTab = document.querySelector('.tab-button');
+            if (firstTab) {
+                firstTab.click(); // Programmatically click the first tab
+            }
+        });
+
+    </script>
+
+</body>
+</html>
